@@ -13,9 +13,9 @@ import (
 	"golang.org/x/mod/semver"
 )
 
-// Client interface represents http client.
+// ProxyClient interface represents http client.
 // http.Client is satisfied this interface.
-type Client interface {
+type ProxyClient interface {
 	Do(req *http.Request) (*http.Response, error)
 }
 
@@ -29,7 +29,7 @@ type Info struct {
 // this struct is satisfied http.Handler.
 type Proxy struct {
 	u      *url.URL
-	client Client
+	client ProxyClient
 
 	versionInfoHandler InfoProxyHandler
 	versionZipHandler  ZipProxyHandler
@@ -38,7 +38,7 @@ type Proxy struct {
 }
 
 // NewProxy makes proxy of the GOPROXY. returns Proxy struct which is satisfied http.Handler.
-func NewProxy(c Client, upstreamGoProxyHost string) (*Proxy, error) {
+func NewProxy(c ProxyClient, upstreamGoProxyHost string) (*Proxy, error) {
 	// we expected `upstreamGoProxyHost == "https://original-goproxy.host"`
 	u, err := url.ParseRequestURI(upstreamGoProxyHost)
 	if err != nil {
