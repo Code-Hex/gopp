@@ -31,6 +31,8 @@ type Proxy struct {
 	u      *url.URL
 	client ProxyClient
 
+	errHandler ErrHandler
+
 	versionInfoHandler InfoProxyHandler
 	versionZipHandler  ZipProxyHandler
 	versionModHandler  ModProxyHandler
@@ -65,10 +67,12 @@ func (p *Proxy) request(path string) (*http.Response, error) {
 }
 
 func (p *Proxy) makeHandler() http.Handler {
+	if p.errHandler == nil {
+		p.errHandler = defaultErrHandler()
+	}
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		if err := p.handlers(w, r, r.URL.Path); err != nil {
-			http.Error(w, err.Error(), http.StatusInternalServerError)
-			return
+			p.errHandler(w, r, err)
 		}
 	})
 }

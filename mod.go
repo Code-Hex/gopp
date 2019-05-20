@@ -13,11 +13,11 @@ import (
 type ModProxyHandler func(w http.ResponseWriter, r *http.Request, body io.Reader) error
 
 // AddModProxyHandler registers proxy handler for /@v/v0.0.1.mod
-func (p *Proxy) AddModProxyHandler(h ZipProxyHandler) error {
+func (p *Proxy) AddModProxyHandler(h ModProxyHandler) error {
 	if h == nil {
 		return errors.New("unexpected nil")
 	}
-	p.versionZipHandler = h
+	p.versionModHandler = h
 	return nil
 }
 
