@@ -1,0 +1,18 @@
+codecov:
+  allow_coverage_offsets: true
+ignore:
+  - "cmd"
+coverage:
+  precision: 2
+  round: down
+  range: "80...100"
+  status:
+    project:
+      default:
+        target: auto
+        threshold: 5%
+    patch:
+      default:
+        only_pulls: true
+        target: 50%
+        threshold: 5%

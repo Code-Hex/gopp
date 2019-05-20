@@ -40,7 +40,7 @@ workflows:
   version: 2
   test-workflow:
     jobs:
-      - build:
+      - test:
           context: *context
           filters:
             tags:
