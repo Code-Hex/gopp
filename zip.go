@@ -7,8 +7,12 @@ import (
 	"net/http"
 )
 
+// ZipProxyHandler represents proxy handler for /@v/v0.0.1.zip
+// body receieves zip file. body will close file descripter
+// at outside of the handler.
 type ZipProxyHandler func(w http.ResponseWriter, r *http.Request, body io.Reader) error
 
+// AddZipProxyHandler registers proxy handler for /@v/v0.0.1.zip
 func (p *Proxy) AddZipProxyHandler(h ZipProxyHandler) error {
 	if h == nil {
 		return errors.New("unexpected nil")

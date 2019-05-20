@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"net/http"
 	"net/url"
-	"os"
 	"path"
 	"path/filepath"
 	"strings"
@@ -14,8 +13,8 @@ import (
 	"golang.org/x/mod/semver"
 )
 
-const upstreamGoProxyEnv = "UPSTREAM_GOPROXY"
-
+// Client interface represents http client.
+// http.Client is satisfied this interface.
 type Client interface {
 	Do(req *http.Request) (*http.Response, error)
 }
@@ -26,6 +25,8 @@ type Info struct {
 	Time    time.Time // commit time
 }
 
+// Proxy proxies to GOPROXY of upstream.
+// this struct is satisfied http.Handler.
 type Proxy struct {
 	u      *url.URL
 	client Client
@@ -36,10 +37,10 @@ type Proxy struct {
 	versionListHandler ListProxyHandler
 }
 
-func NewProxy(c Client) (*Proxy, error) {
-	// we expected `export UPSTREAM_GOPROXY=https://original-goproxy.host`
-	origHost := os.Getenv(upstreamGoProxyEnv)
-	u, err := url.ParseRequestURI(origHost)
+// NewProxy makes proxy of the GOPROXY. returns Proxy struct which is satisfied http.Handler.
+func NewProxy(c Client, upstreamGoProxyHost string) (*Proxy, error) {
+	// we expected `upstreamGoProxyHost == "https://original-goproxy.host"`
+	u, err := url.ParseRequestURI(upstreamGoProxyHost)
 	if err != nil {
 		return nil, fmt.Errorf("unexpected host: %v", err)
 	}

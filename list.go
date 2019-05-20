@@ -8,8 +8,11 @@ import (
 	"net/http"
 )
 
+// ListProxyHandler represents proxy handler for /@v/list
+// versionList receieves list of the go release version which is following semantic versioning.
 type ListProxyHandler func(w http.ResponseWriter, r *http.Request, versionList []string) error
 
+// AddListProxy registers proxy handler for /@v/list
 func (p *Proxy) AddListProxy(h ListProxyHandler) error {
 	if h == nil {
 		return errors.New("unexpected nil")

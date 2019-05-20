@@ -8,8 +8,11 @@ import (
 	"net/http"
 )
 
+// InfoProxyHandler represents proxy handler for /@latest and /@v/v0.0.1.info
+// info receieves information of the go release version.
 type InfoProxyHandler func(w http.ResponseWriter, r *http.Request, info *Info) error
 
+// AddInfoProxyHandler registers proxy handler for /@latest and /@v/v0.0.1.info
 func (p *Proxy) AddInfoProxyHandler(h InfoProxyHandler) error {
 	if h == nil {
 		return errors.New("unexpected nil")

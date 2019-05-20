@@ -7,8 +7,12 @@ import (
 	"net/http"
 )
 
+// ModProxyHandler represents proxy handler for /@v/v0.0.1.mod
+// body receieves mod file. body will close file descripter
+// at outside of the handler.
 type ModProxyHandler func(w http.ResponseWriter, r *http.Request, body io.Reader) error
 
+// AddModProxyHandler registers proxy handler for /@v/v0.0.1.mod
 func (p *Proxy) AddModProxyHandler(h ZipProxyHandler) error {
 	if h == nil {
 		return errors.New("unexpected nil")
