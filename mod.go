@@ -21,9 +21,9 @@ func (p *Proxy) AddModProxyHandler(h ModProxyHandler) error {
 	return nil
 }
 
-func (p *Proxy) versionModProxy(w http.ResponseWriter, r *http.Request, urlPath string) error {
+func (p *Proxy) versionModProxy(w http.ResponseWriter, r *http.Request) error {
 	// /golang.org/x/net/@v/v0.0.1.mod
-	resp, err := p.request(urlPath)
+	resp, err := p.request(r.URL.Path)
 	if err != nil {
 		return err
 	}

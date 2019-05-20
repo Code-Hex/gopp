@@ -21,9 +21,9 @@ func (p *Proxy) AddInfoProxyHandler(h InfoProxyHandler) error {
 	return nil
 }
 
-func (p *Proxy) versionInfoProxy(w http.ResponseWriter, r *http.Request, urlPath string) error {
+func (p *Proxy) versionInfoProxy(w http.ResponseWriter, r *http.Request) error {
 	// /golang.org/x/net/latest
-	resp, err := p.request(urlPath)
+	resp, err := p.request(r.URL.Path)
 	if err != nil {
 		return err
 	}

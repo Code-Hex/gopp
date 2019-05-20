@@ -30,9 +30,9 @@ func body2VersionList(body io.Reader) []string {
 	return ret
 }
 
-func (p *Proxy) versionListProxy(w http.ResponseWriter, r *http.Request, urlPath string) error {
+func (p *Proxy) versionListProxy(w http.ResponseWriter, r *http.Request) error {
 	// /golang.org/x/net/@v/list
-	resp, err := p.request(urlPath)
+	resp, err := p.request(r.URL.Path)
 	if err != nil {
 		return err
 	}
