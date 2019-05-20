@@ -478,7 +478,10 @@ func TestProxy_handlers(t *testing.T) {
 				versionModHandler:  tt.fields.versionModHandler,
 				versionListHandler: tt.fields.versionListHandler,
 			}
-			if err := p.handlers(nil, nil, tt.urlPath); (err != nil) != tt.wantErr {
+			req := &http.Request{
+				URL: &url.URL{Path: tt.urlPath},
+			}
+			if err := p.handlers(nil, req); (err != nil) != tt.wantErr {
 				t.Errorf("Proxy.handlers() error = %v, wantErr %v", err, tt.wantErr)
 			}
 		})

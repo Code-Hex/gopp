@@ -71,18 +71,19 @@ func (p *Proxy) makeHandler() http.Handler {
 		p.errHandler = defaultErrHandler()
 	}
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		if err := p.handlers(w, r, r.URL.Path); err != nil {
+		if err := p.handlers(w, r); err != nil {
 			p.errHandler(w, r, err)
 		}
 	})
 }
 
-func (p *Proxy) handlers(w http.ResponseWriter, r *http.Request, urlPath string) error {
+func (p *Proxy) handlers(w http.ResponseWriter, r *http.Request) error {
+	urlPath := r.URL.Path
 	switch {
 	case strings.HasSuffix(urlPath, "/@latest"):
-		return p.versionInfoProxy(w, r, urlPath)
+		return p.versionInfoProxy(w, r)
 	case strings.HasSuffix(urlPath, "/@v/list"):
-		return p.versionListProxy(w, r, urlPath)
+		return p.versionListProxy(w, r)
 	default:
 		basename := path.Base(urlPath)
 		fileExt := filepath.Ext(basename)
@@ -97,11 +98,11 @@ func (p *Proxy) handlers(w http.ResponseWriter, r *http.Request, urlPath string)
 		}
 		switch fileExt {
 		case ".info":
-			return p.versionInfoProxy(w, r, urlPath)
+			return p.versionInfoProxy(w, r)
 		case ".zip":
-			return p.versionZipProxy(w, r, urlPath)
+			return p.versionZipProxy(w, r)
 		case ".mod":
-			return p.versionModProxy(w, r, urlPath)
+			return p.versionModProxy(w, r)
 		}
 	}
 	return errors.New("unexpected url path")

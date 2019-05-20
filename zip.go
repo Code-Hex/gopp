@@ -21,9 +21,9 @@ func (p *Proxy) AddZipProxyHandler(h ZipProxyHandler) error {
 	return nil
 }
 
-func (p *Proxy) versionZipProxy(w http.ResponseWriter, r *http.Request, urlPath string) error {
+func (p *Proxy) versionZipProxy(w http.ResponseWriter, r *http.Request) error {
 	// /golang.org/x/net/@v/v0.0.1.zip
-	resp, err := p.request(urlPath)
+	resp, err := p.request(r.URL.Path)
 	if err != nil {
 		return err
 	}
